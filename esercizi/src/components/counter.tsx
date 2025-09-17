@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CounterDisplay from "./counterDisplay"
 
 type CounterProp = {
@@ -18,6 +18,9 @@ function Counter({valoreIniziale, plus}:CounterProp) {
     function reset() {
         setCounter(valoreIniziale)
     }
+    useEffect(()=> {
+        console.log(`Il valore del counter è: ${counter}`)
+    })
     return(<>
     <CounterDisplay counter={counter}></CounterDisplay>
     <button onClick={setter}>Incrementa</button>
