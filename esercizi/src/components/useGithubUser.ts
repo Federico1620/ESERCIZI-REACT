@@ -1,27 +1,22 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query"
 
 function useGithubUser (username) {
-    const [user, setUser] = useState(username)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-    useEffect(()=> {
-        async function fetchUser() {
-            try {
-                const data = await fetch(`https://api.github.com/users/${username}`)
-                if (!data.ok) {
-                throw new Error (error)
-            }
-            const response = await data.json()
-            setUser(response)
-            } catch (error) {
-                setError(error)
-            } finally {
-                setLoading(false)
-            }
+    const {
+        data, isLoading, error, refetch
+    } = useQuery({
+        queryKey: ["User", username],
+        queryFn: async () => {
+            const response = await fetch(`https://api.github.com/users/${username}`)
+            const data = await response.json()
+            return data
         }
-        fetchUser()
-    }, [username])
-    return [user, loading, error]
+    })
+    return{
+        user: data,
+        loading: isLoading,
+        error,
+        refetch
+    }
 }
 
 export default useGithubUser

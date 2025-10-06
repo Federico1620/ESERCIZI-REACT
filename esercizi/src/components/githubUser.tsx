@@ -5,7 +5,7 @@ type GithubUserProp = {
 }
 
 function GithubUser({username}: GithubUserProp) {
-    const [user, loading, error] = useGithubUser(username)
+    const {user, loading, error, refetch} = useGithubUser(username)
     return (<>
     {loading && <p>Caricamento...</p>}
     {!user && <p>Errore: {error}</p>}
@@ -13,7 +13,9 @@ function GithubUser({username}: GithubUserProp) {
         <h2>{user.name}</h2>
         <p>{user.login}</p>
         <img src={user.avatar_url} alt={user.name}></img>
+        <button onClick={refetch}>Ricarica</button>
     </div>}
+
     </>)
 }
 
